@@ -7,9 +7,10 @@ The difference between MRU and LIFO is that MRU updates the queue when
 you get or put an item unlike LIFO which only updates the queue when you put
 the item into the cache. If the item already exists in the queue it won't
 be moved to the back of the queue, unlike LIFO which would move the item
-to the back of the queue. MRU would only move the item to the back of the 
+to the back of the queue. MRU would only move the item to the back of the
 queue when you access the item's data
 """
+
 
 class MRUCache(BaseCaching):
     """ MRUCache defines:
