@@ -23,7 +23,7 @@ class MRUCache(BaseCaching):
         if key and item:
             if key not in self.queue:
                 self.queue.append(key)
-                
+
             self.cache_data[key] = item
             if len(self.cache_data.keys()) > self.MAX_ITEMS:
                 len_mru = len(self.mru_queue)
@@ -32,6 +32,7 @@ class MRUCache(BaseCaching):
                                     if item in self.mru_queue]
                     if len(discard_list) > 0:
                         discard = discard_list.pop(-1)
+                        self.mru_queue.remove(discard)
                     else:
                         discard = self.mru_queue.pop(-1)
                     self.queue.remove(discard)
@@ -40,7 +41,7 @@ class MRUCache(BaseCaching):
                     discard = self.queue.pop(-1)
                 del self.cache_data[discard]
                 print("DISCARD: {}".format(discard))
-                self.mru_queue.append(key)
+                # self.mru_queue.append(key)
 
     def get(self, key):
         """ Get an item by key
