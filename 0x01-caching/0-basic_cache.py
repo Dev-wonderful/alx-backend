@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-""" BaseCaching module
+""" Basic Caching module
 """
 from base_caching import BaseCaching
 
 
 class BasicCache(BaseCaching):
-    """ BaseCache defines:
+    """ BasicCache defines:
       - algorithm of your caching system
       - where your data are stored (in a dictionary)
     """
