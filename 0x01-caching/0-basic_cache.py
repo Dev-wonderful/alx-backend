@@ -3,12 +3,13 @@
 """
 from base_caching import BaseCaching
 
+
 class BasicCache(BaseCaching):
     """ BaseCache defines:
       - algorithm of your caching system
       - where your data are stored (in a dictionary)
     """
-   
+
     def put(self, key, item):
         """ Add an item in the cache
         """
