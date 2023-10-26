@@ -41,7 +41,7 @@ class MRUCache(BaseCaching):
                     discard = self.queue.pop(-1)
                 del self.cache_data[discard]
                 print("DISCARD: {}".format(discard))
-                # self.mru_queue.append(key)
+                self.mru_queue.append(key)
 
     def get(self, key):
         """ Get an item by key
@@ -50,5 +50,5 @@ class MRUCache(BaseCaching):
             if key in self.mru_queue:
                 self.mru_queue.remove(key)
             self.mru_queue.append(key)
-            print(self.mru_queue)
+            # print(self.mru_queue)
         return self.cache_data.get(key, None)
