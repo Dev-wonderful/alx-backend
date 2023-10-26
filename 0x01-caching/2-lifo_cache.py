@@ -25,7 +25,7 @@ class LIFOCache(BaseCaching):
                 self.queue.remove(key)
             self.queue.append(key)
             if len(self.cache_data.keys()) > self.MAX_ITEMS:
-                discard = self.queue.pop(3)
+                discard = self.queue.pop(-2)
                 del self.cache_data[discard]
                 print("DISCARD: {}".format(discard))
 
