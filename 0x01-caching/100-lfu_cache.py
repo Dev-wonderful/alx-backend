@@ -16,12 +16,15 @@ class LFUCache(BaseCaching):
         super().__init__()
         self.lfu_record = []
         self.queue = []
+        # self.MAX_ITEMS = 1
 
     def update_record_frequency(self, key):
         """Update the data frequency and the record arrangement"""
         for index, record in enumerate(self.lfu_record):
             if key == record['key']:
                 record['freq'] += 1
+                if len(self.lfu_record) == 1:
+                    return
                 item = self.lfu_record.pop(index)
                 break
         for index, record in enumerate(self.lfu_record):
@@ -67,6 +70,7 @@ class LFUCache(BaseCaching):
         """ Get an item by key
         """
         if self.cache_data.get(key):
+            # print(f"record: {self.lfu_record}")
             # print(f"key: {key}")
             if key in self.queue:
                 self.queue.remove(key)
