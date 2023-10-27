@@ -17,6 +17,21 @@ class LFUCache(BaseCaching):
         self.lfu_record = []
         self.queue = []
 
+    def update_record_frequency(self, key):
+        """Update the data frequency and the record arrangement"""
+        for index, record in enumerate(self.lfu_record):
+            if key == record['key']:
+                record['freq'] += 1
+                item = self.lfu_record.pop(index)
+                break
+        for index, record in enumerate(self.lfu_record):
+            if record['freq'] < item['freq']:
+                self.lfu_record.insert(index, item)
+                break
+            elif index == len(self.lfu_record) - 1:
+                self.lfu_record.append(item)
+                break
+
     def put(self, key, item):
         """ Add an item in the cache
         """
@@ -25,10 +40,6 @@ class LFUCache(BaseCaching):
             'freq': 0
         }
         if key and item:
-            if key not in self.queue:
-                self.queue.append(key)
-                data['key'] = key
-                self.lfu_record.append(data)
             self.cache_data[key] = item
             if len(self.cache_data.keys()) > self.MAX_ITEMS:
                 lfu_info = {
@@ -41,27 +52,25 @@ class LFUCache(BaseCaching):
                         lfu_info['min'] = record['freq']
                         lfu_info['index'] = index
                 discard = self.lfu_record.pop(lfu_info['index'])
+                self.queue.remove(discard.get('key'))
                 del self.cache_data[discard.get('key')]
                 print("DISCARD: {}".format(discard.get('key')))
+            if key not in self.queue:
+                self.queue.append(key)
+                data['key'] = key
+                self.lfu_record.append(data)
+            else:
+                self.update_record_frequency(key)
+            # print(f"record: {self.lfu_record}")
 
     def get(self, key):
         """ Get an item by key
         """
         if self.cache_data.get(key):
-            item: dict
+            # print(f"key: {key}")
             if key in self.queue:
                 self.queue.remove(key)
-                for index, record in enumerate(self.lfu_record):
-                    if key == record['key']:
-                        record['freq'] += 1
-                        item = self.lfu_record.pop(index)
-                        break
-                for index, record in enumerate(self.lfu_record):
-                    if record['freq'] < item['freq']:
-                        self.lfu_record.insert(index, item)
-                        break
-                    elif index == len(self.lfu_record) - 1:
-                        self.lfu_record.append(item)
-                        break
+                self.update_record_frequency(key)
             self.queue.append(key)
+            # print(f"record: {self.lfu_record}")
         return self.cache_data.get(key, None)
