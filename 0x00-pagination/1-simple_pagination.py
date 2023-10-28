@@ -1,4 +1,4 @@
-#!/usr/bin/pythons
+#!/usr/bin/python
 """A simple pagination"""
 import csv
 import math
